@@ -1,0 +1,63 @@
+
+
+
+spring:
+  # =======================
+  # Spring-Datasource 配置
+  # =======================
+  datasource:
+    url: jdbc:mysql://localhost:3306/activity_test?allowMultiQueries=true&useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC&nullCatalogMeansCurrent=true
+    username: root
+    password: root
+#    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+
+    # =======================
+    # Druid-Pool 配置
+    # =======================
+    druid:
+      loginUsername: fmz
+      loginPassword: fmz
+      initialSize: 5
+      maxActive: 20
+      minIdle: 5
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select 1 from dual
+      testWhileIdle: true
+      testOnBorrow: true
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      #filters: stat,wall,slf4j
+      filters: slf4j
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=1000;druid.stat.logSlowSql=true
+      useGlobalDataSourceStat: true
+
+  # =======================
+  # Spring-Activiti 配置
+  # =======================
+  activiti:
+    process-definition-location-prefix:
+    jpa-enabled: false
+    job-executor-activate: false
+    check-process-definitions: false # 不检查process下的文件，不加这个启动时会报错
+    async-executor-activate: false
+    async-executor-enabled: false
+
+
+# =============
+# Mybatis 配置
+# =============
+mybatis:
+  mapper-locations: classpath*:mapper/*Mapper.xml
+
+# =========================
+# Web容器(默认为tomcat) 配置
+# =========================
+server:
+  port: 8985
+  tomcat:
+    uri-encoding: UTF-8

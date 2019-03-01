@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/testm1551344124120" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1551344124120" name="" targetNamespace="http://www.activiti.org/testm1551344124120" typeLanguage="http://www.w3.org/2001/XMLSchema">
+  <process id="shenqingid" isClosed="false" isExecutable="true" name="shenqing" processType="None">
+    <startEvent id="_2" name="StartEvent"/>
+    <userTask activiti:exclusive="true" id="请假申请id" name="请假申请"/>
+    <sequenceFlow id="_4" sourceRef="_2" targetRef="请假申请id"/>
+    <userTask activiti:assignee="小毛" activiti:exclusive="true" id="班主任id" name="班主任"/>
+    <sequenceFlow id="_6" sourceRef="请假申请id" targetRef="班主任id"/>
+    <userTask activiti:assignee="大毛" activiti:exclusive="true" id="教务处id" name="教务处"/>
+    <sequenceFlow id="_8" sourceRef="班主任id" targetRef="教务处id"/>
+    <endEvent id="_9" name="EndEvent"/>
+    <sequenceFlow id="_10" sourceRef="教务处id" targetRef="_9"/>
+  </process>
+  <bpmndi:BPMNDiagram documentation="background=#3C3F41;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0" id="Diagram-_1" name="New Diagram">
+    <bpmndi:BPMNPlane bpmnElement="shenqingid">
+      <bpmndi:BPMNShape bpmnElement="_2" id="Shape-_2">
+        <dc:Bounds height="32.0" width="32.0" x="250.0" y="0.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="请假申请id" id="Shape-请假申请id">
+        <dc:Bounds height="55.0" width="85.0" x="230.0" y="75.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="班主任id" id="Shape-班主任id">
+        <dc:Bounds height="55.0" width="85.0" x="230.0" y="155.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="教务处id" id="Shape-教务处id">
+        <dc:Bounds height="55.0" width="85.0" x="235.0" y="240.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_9" id="Shape-_9">
+        <dc:Bounds height="32.0" width="32.0" x="260.0" y="330.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_4" id="BPMNEdge__4" sourceElement="_2" targetElement="请假申请id">
+        <di:waypoint x="266.0" y="32.0"/>
+        <di:waypoint x="266.0" y="75.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6" id="BPMNEdge__6" sourceElement="请假申请id" targetElement="班主任id">
+        <di:waypoint x="272.5" y="130.0"/>
+        <di:waypoint x="272.5" y="155.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8" id="BPMNEdge__8" sourceElement="班主任id" targetElement="教务处id">
+        <di:waypoint x="275.0" y="210.0"/>
+        <di:waypoint x="275.0" y="240.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10" id="BPMNEdge__10" sourceElement="教务处id" targetElement="_9">
+        <di:waypoint x="276.0" y="295.0"/>
+        <di:waypoint x="276.0" y="330.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

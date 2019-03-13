@@ -9,6 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -41,7 +44,6 @@ public class ActivityApplicationTests {
         repositoryService.createDeployment().addClasspathResource("qingjia.bpmn")
                 .addClasspathResource("qingjia.png").deploy();
     }
-
 
     /**
      * @description 删除工作流
@@ -85,6 +87,68 @@ public class ActivityApplicationTests {
                 .list();
         for (ProcessDefinition pd : pdList) {
             System.out.println(pd.getName());
+            System.out.println(pd.getId());
         }
     }
+
+    /**
+     * 查看流程图
+     * 根据deploymentId和name(在act_ge_bytearray数据表中)
+     */
+    @Test
+    public void testShowImage() throws Exception {
+        InputStream inputStream = repositoryService
+                /**
+                 * deploymentID
+                 * 文件的名称和路径
+                 */
+                .getResourceAsStream("2501", "qingjia.png");
+        OutputStream outputStream3 = new FileOutputStream("e:/processimg.png");
+        int b = -1;
+        while ((b = inputStream.read()) != -1) {
+            outputStream3.write(b);
+        }
+        inputStream.close();
+        outputStream3.close();
+    }
+
+    /**
+     * 根据pdid（ID_字段）查看图片(在act_re_procdef数据表中)
+     * @throws Exception
+     */
+    @Test
+    public void testShowImage2() throws Exception {
+        InputStream inputStream = repositoryService
+                .getProcessDiagram("shenqingid:1:2504");
+        OutputStream outputStream = new FileOutputStream("e:/processimg.png");
+        int b = -1;
+        while ((b = inputStream.read()) != -1) {
+            outputStream.write(b);
+        }
+        inputStream.close();
+        outputStream.close();
+
+    }
+
+    /**
+     * 查看bpmn文件(在act_re_procdef数据表中)
+     */
+    @Test
+    public void testShowBpmn() throws Exception {
+        InputStream inputStream = repositoryService
+                .getProcessModel("shenqingid:1:2504");
+        OutputStream outputStream = new FileOutputStream("e:/processimg.bpmn");
+        int b = -1;
+        while ((b = inputStream.read()) != -1) {
+            outputStream.write(b);
+        }
+        inputStream.close();
+        outputStream.close();
+    }
+
+
+
+
+
+
 }

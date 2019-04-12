@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.main.activity.dao.UserMapper">
+    <resultMap id="userMap" type="com.main.activity.model.User">
+        <id column="id" property="id" javaType="long" jdbcType="BIGINT"/>
+        <result column="name" property="name" javaType="string" jdbcType="VARCHAR"/>
+        <result column="password" property="password"/>
+        <result column="creator" property="creator"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modify_user" property="modifyUser"/>
+        <result column="modify_date" property="modifyDate"/>
+        <result column="is_deleted" property="isDeleted"/>
+    </resultMap>
+
+    <sql id="table">
+      sys_user
+    </sql>
+
+    <sql id="columns">
+        id, <include refid="cols_exclude_id"/>
+    </sql>
+
+    <sql id="cols_exclude_id">
+        name, password, creator, create_date, modify_user, modify_date, is_deleted
+    </sql>
+
+    <sql id="values">
+        #{name}, #{password}, #{creator}, now(), #{modifyUser}, now(), #{isDeleted}
+    </sql>
+
+    <sql id="condition_equal">
+        WHERE 1 = 1
+        <if test="id!=null">id = #{entity.id}</if>
+        <if test="name!=null">name = #{entity.name}</if>
+        <if test="password!=null">password = #{entity.password}</if>
+        <if test="creator!=null">creator = #{entity.creator}</if>
+        <if test="modifyUser!=null">modify_user = #{entity.modifyUser}</if>
+        <if test="isDeleted!=null">is_deleted = #{entity.isDeleted}</if>
+    </sql>
+
+    <insert id="create" parameterType="com.main.activity.model.User" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO <include refid="table"/>
+        (<include refid="cols_exclude_id"/>)
+        VALUES
+        (<include refid="values"/>)
+    </insert>
+
+    <update id="update" parameterType="com.main.activity.model.User">
+        UPDATE <include refid="table"/>
+        <set>
+            modify_date = now()
+            <if test="name!=null">name = #{name}</if>
+            <if test="password!=null">password = #{password}</if>
+            <if test="creator!=null">creator = #{creator}</if>
+            <if test="modifyUser!=null">modify_user = #{modifyUser}</if>
+            <if test="isDeleted!=null">is_deleted = #{isDeleted}</if>
+        </set>
+    </update>
+
+    <delete id="deleteById" parameterType="com.main.activity.model.User">
+        DELETE FROM <include refid="table"/>
+        WHERE id = #{id}
+    </delete>
+
+    <update id="deleteLogicalById" parameterType="com.main.activity.model.User">
+        UPDATE <include refid="table"/>
+        SET is_deleted = 1
+        WHERE id = #{id}
+    </update>
+
+    <select id="getOneById" resultMap="userMap" parameterType="Long">
+        SELECT
+        <include refid="columns" />
+        FROM <include refid="table"/>
+        WHERE id = #{id}
+    </select>
+
+</mapper>

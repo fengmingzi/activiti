@@ -29,6 +29,7 @@
         #{name}, #{password}, #{creator}, now(), #{modifyUser}, now(), #{isDeleted}
     </sql>
 
+    <!--相等条件-->
     <sql id="condition_equal">
         WHERE 1 = 1
         <if test="id!=null">id = #{entity.id}</if>
@@ -37,6 +38,18 @@
         <if test="creator!=null">creator = #{entity.creator}</if>
         <if test="modifyUser!=null">modify_user = #{entity.modifyUser}</if>
         <if test="isDeleted!=null">is_deleted = #{entity.isDeleted}</if>
+    </sql>
+
+    <!--分页尾部-->
+    <sql id="pager_tail">
+        LIMIT #{pager.startRow},#{pager.rows}
+    </sql>
+
+    <!--分页排序-->
+    <sql id="pager_orderBy">
+        <if test="pager.sort != null and pager.sort != null">
+            ORDER BY #{pager.sort} #{pager.order}
+        </if>
     </sql>
 
     <insert id="create" parameterType="com.main.activity.model.User" keyProperty="id" useGeneratedKeys="true">
@@ -69,11 +82,29 @@
         WHERE id = #{id}
     </update>
 
-    <select id="getOneById" resultMap="userMap" parameterType="Long">
+    <select id="getOneById" parameterType="Long" resultMap="userMap">
         SELECT
         <include refid="columns" />
         FROM <include refid="table"/>
         WHERE id = #{id}
+    </select>
+
+    <select id="getOneByCondition" parameterType="com.main.activity.model.User" resultMap="userMap">
+        SELECT * FROM <include refid="table"/>
+        WHERE <include refid="condition_equal"/>
+        LIMIT 1
+    </select>
+
+    <select id="countByCondition" parameterType="com.main.activity.model.User" resultType="long">
+        SELECT count(1) FROM <include refid="table"/>
+        WHERE <include refid="condition_equal"/>
+    </select>
+
+    <select id="getPageByCondition" resultMap="userMap">
+        SELECT * FROM <include refid="table"/>
+        WHERE <include refid="condition_equal"/>
+        <include refid="pager_orderBy"/>
+        <include refid="pager_tail"/>
     </select>
 
 </mapper>

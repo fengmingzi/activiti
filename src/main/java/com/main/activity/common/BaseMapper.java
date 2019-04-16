@@ -11,19 +11,26 @@ import java.util.List;
  */
 public interface BaseMapper<T> {
 
-    Boolean create(T t); //创建数据
+    /**创建数据*/
+    Boolean create(T t);
 
+    /**更新数据*/
     Boolean update(T t);
 
-    Boolean deleteLogicalById(T t); //根据id逻辑删除.
+    /**根据id逻辑删除.*/
+    Boolean deleteLogicalById(T t);
 
-    Boolean deleteById(T t); //根据id删除.
+    /**根据id删除.*/
+    Boolean deleteById(T t);
 
-    T getOneById(Long id); //根据id获取单条数据.
+    /**根据id获取单条数据.*/
+    T getOneById(Long id);
 
-    T getOneByCondition(@Param("entity") T t); //根据条件获取单条数据.
+    /**根据条件获取单条数据.*/
+    T getOneByCondition(@Param("entity") T t);
 
-    Long countByCondition(@Param("entity") T t); //根据条件获取数量.
+    /**根据条件获取数量.*/
+    Long countByCondition(@Param("entity") T t);
 
     /**
      * 根据条件获取翻页数据.

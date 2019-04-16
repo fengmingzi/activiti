@@ -41,12 +41,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Response<Boolean> deleteLogicalById(User user) {
-        return null;
+        Boolean flag = userMapper.deleteLogicalById(user);
+        if (flag) {
+            return Response.ok(flag);
+        }
+        return Response.fail("400", "删除用户失败", flag);
     }
 
     @Override
     public Response<Boolean> deleteById(User user) {
-        return null;
+        Boolean flag = userMapper.deleteById(user);
+        if (flag) {
+            return Response.ok(flag);
+        }
+        return Response.fail("400", "删除用户失败", flag);
     }
 
     @Override
@@ -57,16 +65,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Response<User> getOneByCondition(User user) {
-        return null;
+        return Response.ok(userMapper.getOneByCondition(user));
     }
 
     @Override
     public Response<Long> countByCondition(User user) {
-        return null;
+        return Response.ok(userMapper.countByCondition(user));
     }
 
     @Override
-    public Response<List<User>> getPageByCondition(Pager<User> pager, User user) {
-        return null;
+    public Response<Pager<User>> getPageByCondition(Pager<User> pager, User user) {
+        Long count = userMapper.countByCondition(user);
+        List<User> users = userMapper.getPageByCondition(pager, user);
+        pager.setTotalCount(count);
+        pager.setRecords(users);
+        return Response.ok(pager);
     }
 }

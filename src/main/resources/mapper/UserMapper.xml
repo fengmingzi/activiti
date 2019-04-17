@@ -32,12 +32,27 @@
     <!--相等条件-->
     <sql id="condition_equal">
         WHERE 1 = 1
-        <if test="id!=null">id = #{entity.id}</if>
-        <if test="name!=null">name = #{entity.name}</if>
-        <if test="password!=null">password = #{entity.password}</if>
-        <if test="creator!=null">creator = #{entity.creator}</if>
-        <if test="modifyUser!=null">modify_user = #{entity.modifyUser}</if>
-        <if test="isDeleted!=null">is_deleted = #{entity.isDeleted}</if>
+        <if test="entity != null">
+            <if test="entity.id!=null">AND id = #{entity.id}</if>
+            <if test="entity.name!=null">AND name = #{entity.name}</if>
+            <if test="entity.password!=null">AND password = #{entity.password}</if>
+            <if test="entity.creator!=null">AND creator = #{entity.creator}</if>
+            <if test="entity.modifyUser!=null">AND modify_user = #{entity.modifyUser}</if>
+            <if test="entity.isDeleted!=null">AND is_deleted = #{entity.isDeleted}</if>
+        </if>
+    </sql>
+
+    <!--模糊匹配条件-->
+    <sql id="condition">
+        WHERE 1 = 1
+        <if test="entity != null">
+            <if test="entity.id!=null">AND id = #{entity.id}</if>
+            <if test="entity.name!=null">AND name LIKE CONCAT ('%', #{entity.name}, '%')</if>
+            <if test="entity.password!=null">AND password = #{entity.password}</if>
+            <if test="entity.creator!=null">AND creator LIKE CONCAT ('%', #{entity.creator}, '%')</if>
+            <if test="entity.modifyUser!=null">AND modify_user LIKE CONCAT ('%', #{entity.modifyUser}, '%')</if>
+            <if test="entity.isDeleted!=null">AND is_deleted = #{entity.isDeleted}</if>
+        </if>
     </sql>
 
     <!--分页尾部-->
@@ -47,7 +62,7 @@
 
     <!--分页排序-->
     <sql id="pager_orderBy">
-        <if test="pager.sort != null and pager.sort != null">
+        <if test="pager.sort != null and pager.sort != ''">
             ORDER BY #{pager.sort} #{pager.order}
         </if>
     </sql>
@@ -62,13 +77,14 @@
     <update id="update" parameterType="com.main.activity.model.User">
         UPDATE <include refid="table"/>
         <set>
-            modify_date = now()
-            <if test="name!=null">name = #{name}</if>
-            <if test="password!=null">password = #{password}</if>
-            <if test="creator!=null">creator = #{creator}</if>
-            <if test="modifyUser!=null">modify_user = #{modifyUser}</if>
-            <if test="isDeleted!=null">is_deleted = #{isDeleted}</if>
+            modify_date = now(),
+            <if test="name!=null">name = #{name},</if>
+            <if test="password!=null">password = #{password},</if>
+            <if test="creator!=null">creator = #{creator},</if>
+            <if test="modifyUser!=null">modify_user = #{modifyUser},</if>
+            <if test="isDeleted!=null">is_deleted = #{isDeleted},</if>
         </set>
+        WHERE id = #{id}
     </update>
 
     <delete id="deleteById" parameterType="com.main.activity.model.User">
@@ -91,18 +107,18 @@
 
     <select id="getOneByCondition" parameterType="com.main.activity.model.User" resultMap="userMap">
         SELECT * FROM <include refid="table"/>
-        WHERE <include refid="condition_equal"/>
+        <include refid="condition_equal"/>
         LIMIT 1
     </select>
 
     <select id="countByCondition" parameterType="com.main.activity.model.User" resultType="long">
         SELECT count(1) FROM <include refid="table"/>
-        WHERE <include refid="condition_equal"/>
+        <include refid="condition_equal"/>
     </select>
 
     <select id="getPageByCondition" resultMap="userMap">
         SELECT * FROM <include refid="table"/>
-        WHERE <include refid="condition_equal"/>
+        <include refid="condition_equal"/>
         <include refid="pager_orderBy"/>
         <include refid="pager_tail"/>
     </select>

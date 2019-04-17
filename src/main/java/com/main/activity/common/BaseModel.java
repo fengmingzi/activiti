@@ -32,7 +32,7 @@ public class BaseModel implements Serializable {
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date modifyDate;
 
-    /**是否删除标识，0：不删除，1：删除*/
-    private int isDeleted = 0;
+    /**是否删除标识，0：不删除(默认)，1：删除*/
+    private Integer isDeleted;
 
 }

@@ -26,7 +26,7 @@ public class Response<T> implements Serializable {
 
 
   public Response() {
-    this.code = "0";
+    this.code = "200";
     this.msg = "请求成功";
     this.setIsSuccess(true);
   }
@@ -74,7 +74,7 @@ public class Response<T> implements Serializable {
 
   public static <T> Response<T> ok(T data) {
     Response resp = new Response();
-    resp.setCode("0");
+    resp.setCode("200");
     resp.setData(data);
     resp.setIsSuccess(true);
     return resp;

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.main.activity.dao.UserRoleMapper">
+    <resultMap id="userRoleMap" type="com.main.activity.model.UserRole">
+        <id column="uid" property="uid" javaType="long" jdbcType="BIGINT"/>
+        <id column="rid" property="rid" javaType="long" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="table">
+      sys_user_role
+    </sql>
+
+    <sql id="columns">
+        uid, rid
+    </sql>
+
+    <sql id="values">
+        #{uid}, #{rid}
+    </sql>
+
+    <!--相等条件-->
+    <sql id="condition_equal">
+        WHERE 1 = 1
+        <if test="entity != null">
+            <if test="entity.uid!=null">AND uid = #{entity.uid}</if>
+            <if test="entity.rid!=null">AND rid = #{entity.rid}</if>
+        </if>
+    </sql>
+
+    <insert id="create" parameterType="com.main.activity.model.UserRole">
+        INSERT INTO <include refid="table"/>
+        (<include refid="columns"/>)
+        VALUES
+        (<include refid="values"/>)
+    </insert>
+
+    <!--批量插入用户与角色关联关系-->
+    <insert id="createBatch">
+        INSERT INTO <include refid="table"/>
+        (<include refid="columns"/>)
+        VALUES
+        <foreach collection="rids" item="rid" separator=",">
+            (#{uid},#{rid})
+        </foreach>
+    </insert>
+
+    <!--根据用户id删除与角色的关联数据-->
+    <delete id="deleteByUid" parameterType="Long">
+        DELETE FROM <include refid="table"/>
+        WHERE uid = #{uid}
+    </delete>
+
+    <!--根据角色id删除与用户的关联数据-->
+    <delete id="deleteByRid" parameterType="Long">
+        DELETE FROM <include refid="table"/>
+        WHERE rid = #{rid}
+    </delete>
+
+</mapper>

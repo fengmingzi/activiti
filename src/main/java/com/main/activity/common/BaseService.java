@@ -36,7 +36,7 @@ public interface BaseService<T> {
      * 根据条件获取分页数据.
      * 获取分页数据总数需要根据countByCondition方法来获取
      */
-    Response<Pager<User>> getPageByCondition(@Param("pager") Pager<T> pager, @Param("entity") T t);
+    Response<Pager<T>> getPageByCondition(@Param("pager") Pager<T> pager, @Param("entity") T t);
 
 
 }

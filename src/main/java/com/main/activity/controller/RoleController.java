@@ -3,12 +3,15 @@ package com.main.activity.controller;
 import com.main.activity.common.utils.Response;
 import com.main.activity.model.Role;
 import com.main.activity.service.RoleService;
+import com.main.activity.service.UserRoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @Author: fengguang xu
@@ -22,6 +25,8 @@ public class RoleController {
 
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private UserRoleService userRoleService;
 
     /**
      * @author fengguang xu
@@ -43,5 +48,30 @@ public class RoleController {
         }
         return Response.ok(roleResponse.getData());
     }
+
+    /**
+     * @author fengguang xu
+     * @description 给用户添加角色
+     * @date 2019/4/22 14:17
+     * @param uid	用户id
+     * @param rids  角色id集合
+     * @return com.main.activity.common.utils.Response<java.lang.Boolean>
+     */
+    @RequestMapping(value = "/addRole", method = RequestMethod.POST)
+    public Response<Boolean> addRole(Long uid, List<Long> rids) {
+
+        if (uid == null) {
+            return Response.fail("400", "用户id不能为空");
+        }
+
+        try {
+            Response<Boolean> res = userRoleService.addRole(uid, rids);
+            return res;
+        } catch (Exception e) {
+            log.error("给用户绑定角色异常：", e);
+            return Response.fail("400", e.getMessage());
+        }
+    }
+
 
 }

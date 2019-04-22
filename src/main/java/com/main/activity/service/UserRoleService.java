@@ -42,4 +42,14 @@ public interface UserRoleService extends BaseService<UserRole> {
      * @return com.main.activity.common.utils.Response<java.lang.Boolean>
      */
     Response<Boolean> deleteByRid(Long rid);
+
+    /**
+     * @author fengguang xu
+     * @description 用户关联角色
+     * @date 2019/4/22 15:11
+     * @param uid	用户id
+     * @param rids	角色id集合
+     * @return com.main.activity.common.utils.Response<java.lang.Boolean>
+     */
+    Response<Boolean> addRole(Long uid, List<Long> rids);
 }

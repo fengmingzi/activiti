@@ -83,4 +83,10 @@ public class PermissionServiceImpl implements PermissionService {
         pager.setRecords(permissions);
         return Response.ok(pager);
     }
+
+    @Override
+    public Response<List<Permission>> getPermissionByUid(Long uid) {
+        List<Permission> permissions = permissionMapper.getPermissionByUid(uid);
+        return Response.ok(permissions);
+    }
 }

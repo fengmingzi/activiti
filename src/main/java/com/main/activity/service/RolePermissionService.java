@@ -41,4 +41,14 @@ public interface RolePermissionService extends BaseService<RolePermission> {
      */
     Response<Boolean> deleteByPid(Long pid);
 
+    /**
+     * @author fengguang xu
+     * @description 角色和权限绑定
+     * @date 2019/4/22 15:40
+     * @param rid   角色id
+     * @param pids  权限id集合
+     * @return com.main.activity.common.utils.Response<java.lang.Boolean>
+     */
+    Response<Boolean> addPermission(Long rid, List<Long> pids);
+
 }

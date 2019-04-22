@@ -7,6 +7,7 @@ import com.main.activity.model.RolePermission;
 import com.main.activity.service.RolePermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -78,5 +79,24 @@ public class RolePermissionServiceImpl implements RolePermissionService {
     @Override
     public Response<Pager<RolePermission>> getPageByCondition(Pager<RolePermission> pager, RolePermission rolePermission) {
         return null;
+    }
+
+    /**
+     * @author fengguang xu
+     * @description 角色绑定权限
+     * @date 2019/4/22 15:35
+     * @param rid	角色id
+     * @param pids	权限id集合
+     * @return void
+     */
+    @Transactional
+    public Response<Boolean> addPermission(Long rid, List<Long> pids) {
+        //删除原角色和权限绑定的数据
+        rolePermissionMapper.deleteByRid(rid);
+        //重新绑定角色和权限关联关系
+        if (pids != null && pids.size() > 0) {
+            rolePermissionMapper.createBatch(rid, pids);
+        }
+        return Response.ok(true);
     }
 }

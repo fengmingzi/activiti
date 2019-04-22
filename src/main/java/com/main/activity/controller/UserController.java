@@ -54,7 +54,6 @@ public class UserController {
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public Response<User> update(User user) {
-        //TODO 需验证如果为空时是否会更新字段为空
         Response<User> userResponse = userService.update(user);
         return Response.ok(userResponse.getData());
     }

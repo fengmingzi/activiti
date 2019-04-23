@@ -23,7 +23,7 @@ public class UserRoleServiceImpl implements UserRoleService {
     private UserRoleMapper userRoleMapper;
 
     @Override
-    public Response<Boolean> createBatch(Long uid, List<Long> rids) {
+    public Response<Boolean> createBatch(Long uid, List<String> rids) {
         return Response.ok(userRoleMapper.createBatch(uid, rids));
     }
 
@@ -90,7 +90,7 @@ public class UserRoleServiceImpl implements UserRoleService {
      * @return com.main.activity.common.utils.Response<java.lang.Boolean>
      */
     @Transactional
-    public Response<Boolean> addRole(Long uid, List<Long> rids) {
+    public Response<Boolean> addRole(Long uid, List<String> rids) {
         //删除原用户与角色关联关系
         userRoleMapper.deleteByUid(uid);
         //保存用户与角色关联关系

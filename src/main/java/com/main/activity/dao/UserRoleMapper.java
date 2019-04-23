@@ -5,6 +5,7 @@ import com.main.activity.model.Role;
 import com.main.activity.model.User;
 import com.main.activity.model.UserRole;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public interface UserRoleMapper extends BaseMapper<UserRole> {
      * @param rids	角色id集合
      * @return java.lang.Boolean
      */
-    Boolean createBatch(Long uid, List<Long> rids);
+    Boolean createBatch(@Param("uid") Long uid, @Param("rids") List<String> rids);
 
     /**
      * @author fengguang xu

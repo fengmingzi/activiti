@@ -33,6 +33,14 @@ public class MyShiroRealm extends AuthorizingRealm {
     @Autowired
     private PermissionService permissionService;
 
+    /**
+     * @author fengguang xu
+     * @description 接口上有shiro的@RequiresRoles、@RequiresPermissions权限注解时会调用此方法，
+     *          会查询出当前用户的角色和权限，进行权限验证
+     *          TODO 优化：可以将当前用户的角色和权限信息放到缓存中，避免每次调接口都需要查询数据库
+     * @date 2019/4/23 9:50
+     * @return
+     */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         String name = (String) principalCollection.getPrimaryPrincipal();
@@ -81,6 +89,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         return simpleAuthorizationInfo;
     }
 
+    /**登陆时会调用此方法，获取验证用户信息*/
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         //加这一步的目的是在Post请求的时候会先进认证，然后在到请求

@@ -2,8 +2,6 @@ package com.main.activity.service;
 
 import com.main.activity.common.BaseService;
 import com.main.activity.common.utils.Response;
-import com.main.activity.model.Role;
-import com.main.activity.model.User;
 import com.main.activity.model.UserRole;
 
 import java.util.List;
@@ -23,7 +21,7 @@ public interface UserRoleService extends BaseService<UserRole> {
      * @param rids	角色id集合
      * @return com.main.activity.common.utils.Response<java.lang.Boolean>
      */
-    Response<Boolean> createBatch(Long uid, List<Long> rids);
+    Response<Boolean> createBatch(Long uid, List<String> rids);
 
     /**
      * @author fengguang xu
@@ -51,5 +49,5 @@ public interface UserRoleService extends BaseService<UserRole> {
      * @param rids	角色id集合
      * @return com.main.activity.common.utils.Response<java.lang.Boolean>
      */
-    Response<Boolean> addRole(Long uid, List<Long> rids);
+    Response<Boolean> addRole(Long uid, List<String> rids);
 }

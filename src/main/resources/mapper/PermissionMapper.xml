@@ -120,7 +120,7 @@
     </select>
 
     <select id="getPermissionByUid" parameterType="long" resultMap="permissionMap">
-        SELECT role.name FROM sys_user user
+        SELECT permission.name FROM sys_user user
         RIGHT JOIN sys_user_role ur ON user.id = ur.uid
         RIGHT JOIN sys_role role ON ur.rid = role.id
         RIGHT JOIN sys_role_permission rp ON rp.rid = role.id

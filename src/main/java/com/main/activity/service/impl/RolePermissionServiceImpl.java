@@ -23,7 +23,7 @@ public class RolePermissionServiceImpl implements RolePermissionService {
     private RolePermissionMapper rolePermissionMapper;
 
     @Override
-    public Response<Boolean> createBatch(Long rid, List<Long> pids) {
+    public Response<Boolean> createBatch(Long rid, List<String> pids) {
         return Response.ok(rolePermissionMapper.createBatch(rid, pids));
     }
 
@@ -90,7 +90,7 @@ public class RolePermissionServiceImpl implements RolePermissionService {
      * @return void
      */
     @Transactional
-    public Response<Boolean> addPermission(Long rid, List<Long> pids) {
+    public Response<Boolean> addPermission(Long rid, List<String> pids) {
         //删除原角色和权限绑定的数据
         rolePermissionMapper.deleteByRid(rid);
         //重新绑定角色和权限关联关系

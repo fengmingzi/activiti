@@ -21,7 +21,7 @@ public interface RolePermissionService extends BaseService<RolePermission> {
      * @param pids	权限id集合
      * @return com.main.activity.common.utils.Response<java.lang.Boolean>
      */
-    Response<Boolean> createBatch(Long rid, List<Long> pids);
+    Response<Boolean> createBatch(Long rid, List<String> pids);
 
     /**
      * @author fengguang xu
@@ -49,6 +49,6 @@ public interface RolePermissionService extends BaseService<RolePermission> {
      * @param pids  权限id集合
      * @return com.main.activity.common.utils.Response<java.lang.Boolean>
      */
-    Response<Boolean> addPermission(Long rid, List<Long> pids);
+    Response<Boolean> addPermission(Long rid, List<String> pids);
 
 }

@@ -3,6 +3,7 @@ package com.main.activity.dao;
 import com.main.activity.common.BaseMapper;
 import com.main.activity.model.RolePermission;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public interface RolePermissionMapper extends BaseMapper<RolePermission> {
      * @param pids	权限id集合
      * @return java.lang.Boolean
      */
-    Boolean createBatch(Long rid, List<Long> pids);
+    Boolean createBatch(@Param("rid") Long rid, @Param("pids") List<String> pids);
 
     /**
      * @author fengguang xu

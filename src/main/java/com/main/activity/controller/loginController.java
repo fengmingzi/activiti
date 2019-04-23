@@ -79,7 +79,7 @@ public class loginController {
 
     //注解的使用
     @RequiresRoles("admin")
-    //@RequiresPermissions("create")
+    @RequiresPermissions("create")
     @RequestMapping(value = "/testShiro")
     public String create(){
         return "Create success!";

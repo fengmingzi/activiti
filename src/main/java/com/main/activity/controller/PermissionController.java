@@ -1,5 +1,6 @@
 package com.main.activity.controller;
 
+import com.google.common.base.Splitter;
 import com.main.activity.common.utils.Response;
 import com.main.activity.model.Permission;
 import com.main.activity.service.PermissionService;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,17 +56,22 @@ public class PermissionController {
      * @description 角色绑定权限
      * @date 2019/4/22 15:24
      * @param rid	角色id
-     * @param pid	权限id集合
+     * @param pids	权限ids,逗号分割
      * @return com.main.activity.common.utils.Response<java.lang.Boolean>
      */
     @RequestMapping(value = "/addPermission", method = RequestMethod.POST)
-    public Response<Boolean> addPermission(Long rid, List<Long> pid) {
+    public Response<Boolean> addPermission(Long rid, String pids) {
 
         if (rid == null) {
             return Response.fail("400", "角色id不能为空");
         }
+
+        List<String> pidList = new ArrayList<>();
+        if (!StringUtils.isEmpty(pids)) {
+            pidList = Splitter.on(",").splitToList(pids);
+        }
         try {
-            Response<Boolean> res = rolePermissionService.addPermission(rid, pid);
+            Response<Boolean> res = rolePermissionService.addPermission(rid, pidList);
             return res;
         } catch (Exception e) {
             log.error("角色绑定权限异常：", e);

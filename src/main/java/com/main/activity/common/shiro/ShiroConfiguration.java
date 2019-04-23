@@ -40,17 +40,18 @@ public class ShiroConfiguration {
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
+        //登陆路径，setLoginUrl 如果不设置值，默认会自动寻找Web工程根目录下的"/login.jsp"页面 或 "/login" 映射
+        shiroFilterFactoryBean.setLoginUrl("/login");
+        //首页
+        shiroFilterFactoryBean.setSuccessUrl("/index");
+        //无权限时跳转的url
+        shiroFilterFactoryBean.setUnauthorizedUrl("/error");
+        //设置拦截器
         Map<String, String> map = new HashMap<>();
         //登出
         map.put("/logout", "logout");
         //对所有用户认证
         map.put("/**", "authc");
-        //登陆
-        shiroFilterFactoryBean.setLoginUrl("/login");
-        //首页
-        shiroFilterFactoryBean.setSuccessUrl("/index");
-        //错误页面，认证不通过跳转
-        shiroFilterFactoryBean.setUnauthorizedUrl("/error");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
         return shiroFilterFactoryBean;
     }

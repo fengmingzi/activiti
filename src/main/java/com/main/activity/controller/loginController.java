@@ -62,7 +62,10 @@ public class loginController {
     //登出
     @RequestMapping(value = "/logout")
     public String logout(){
-        return "logout";
+        Subject subject = SecurityUtils.getSubject();
+        //注销
+        subject.logout();
+        return "成功注销！";
     }
 
     /**

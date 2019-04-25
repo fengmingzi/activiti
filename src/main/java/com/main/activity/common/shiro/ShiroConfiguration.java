@@ -46,10 +46,14 @@ public class ShiroConfiguration {
         shiroFilterFactoryBean.setSuccessUrl("/index");
         //无权限时跳转的url
         shiroFilterFactoryBean.setUnauthorizedUrl("/error");
-        //设置拦截器
+        //设置拦截器，filterChainDefinitions的配置顺序为自上而下,以最上面的为准
         Map<String, String> map = new HashMap<>();
         //登出
         map.put("/logout", "logout");
+        // 记住用户场景下，只要用户登陆过被shiro记住登陆状态就可以正常发起“/api/**”请求
+        //map.put("/api/**", "user");
+        // 请求“/testShiro”路径时，必须是有user角色的用户才可以，同时相比于在方法上加注解加在这里优先级更高
+        //map.put("/testShiro", "roles[user]");
         //对所有用户认证
         map.put("/**", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);

@@ -30,11 +30,11 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 拦截捕捉自定义异常 CubaException.class
+     * 拦截捕捉自定义异常 ServiceException.class
      */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = ServiceException.class)
-    public Response cubaErrorHandler(ServiceException ex) {
+    public Response serviceErrorHandler(ServiceException ex) {
         log.error(ex.getMessage(), ex);
         return Response.fail(ex.getCode() == null?"err500":ex.getCode(), ex.getMessage());
     }

@@ -5,13 +5,17 @@ import com.main.activity.common.utils.Response;
 import com.main.activity.model.Permission;
 import com.main.activity.service.PermissionService;
 import com.main.activity.service.RolePermissionService;
+import com.sun.deploy.net.HttpResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +41,9 @@ public class PermissionController {
      * @param permission
      * @return com.main.activity.common.utils.Response<com.main.activity.model.Permission>
      */
+    @RequiresRoles("admin")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public Response<Permission> create(Permission permission) {
+    public Response<Permission> create(Permission permission, HttpServletRequest request, HttpServletResponse response) {
         String name = permission.getName();
         if (StringUtils.isEmpty(name)) {
             Response.fail("400", "名称不能为空");

@@ -1,5 +1,8 @@
 package com.main.activity.controller;
 
+import com.main.activity.common.shiro.JWTToken;
+import com.main.activity.common.utils.JWTUtil;
+import com.main.activity.common.utils.Response;
 import com.main.activity.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -51,12 +54,18 @@ public class loginController {
      * @return java.lang.String
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(String name, String password) {
+    public Response<String> login(String name, String password) {
         //添加用户认证信息
+        String token = JWTUtil.createToken(name);
+        JWTToken jwtToken = new JWTToken(token);
         Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(name, password);
-        subject.login(usernamePasswordToken);
-        return "login";
+        //UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(name, password);
+        //执行后调用MyShiroRealm中的doGetAuthenticationInfo方法
+        subject.login(jwtToken);
+        if (token != null) {
+            return Response.ok(token);
+        }
+        return Response.fail("500", "生成token失败");
     }
 
     //登出

@@ -1,5 +1,6 @@
 package com.main.activity.common.shiro;
 
+import com.main.activity.common.utils.JWTUtil;
 import com.main.activity.common.utils.Response;
 import com.main.activity.model.Permission;
 import com.main.activity.model.Role;
@@ -34,6 +35,14 @@ public class MyShiroRealm extends AuthorizingRealm {
     private PermissionService permissionService;
 
     /**
+     * 必须重写此方法，不然会报错
+     */
+    @Override
+    public boolean supports(AuthenticationToken token) {
+        return token instanceof JWTToken;
+    }
+
+    /**
      * @author fengguang xu
      * @description 接口上有shiro的@RequiresRoles、@RequiresPermissions权限注解时会调用此方法，
      *          会查询出当前用户的角色和权限，进行权限验证
@@ -43,7 +52,8 @@ public class MyShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        String name = (String) principalCollection.getPrimaryPrincipal();
+        //String name = (String) principalCollection.getPrimaryPrincipal();
+        String name = JWTUtil.getUsername(principalCollection.toString());
         User user = new User();
         user.setName(name);
         //查询用户信息
@@ -96,10 +106,19 @@ public class MyShiroRealm extends AuthorizingRealm {
         if (authenticationToken.getPrincipal() == null) {
             return null;
         }
+
+        String token = (String) authenticationToken.getCredentials();
+        // 解密获得username，用于和数据库进行对比
+        String username = JWTUtil.getUsername(token);
+        if (username == null || !JWTUtil.verify(token, username)) {
+            throw new AuthenticationException("token认证失败！");
+            //TODO 异常类增加该异常捕捉
+        }
+
         //获取用户信息
-        String name = authenticationToken.getPrincipal().toString();
+        //String name = authenticationToken.getPrincipal().toString();
         User user = new User();
-        user.setName(name);
+        user.setName(username);
         Response<User> userResponse = userService.getOneByCondition(user);
         if (!userResponse.getIsSuccess()) {
             //TODO 查询用户失败，这里返回异常信息
@@ -110,8 +129,13 @@ public class MyShiroRealm extends AuthorizingRealm {
             //TODO 未查询到用户信息，这里返回异常信息
             return null;
         }
+
+        String password = userRes.getPassword();
+        if (password == null) {
+            throw new AuthenticationException("该用户不存在！");
+        }
         //这里验证authenticationToken和simpleAuthorizationInfo的信息
-        SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(name, userRes.getPassword(), getName());
-        return simpleAuthenticationInfo;
+        //SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(name, userRes.getPassword(), getName());
+        return new SimpleAuthenticationInfo(token, token, getName());
     }
 }

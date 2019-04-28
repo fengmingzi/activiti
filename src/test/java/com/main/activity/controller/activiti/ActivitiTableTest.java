@@ -1,4 +1,4 @@
-package com.main.activity.activiti;
+package com.main.activity.controller.activiti;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngineConfiguration;
 import org.junit.Test;

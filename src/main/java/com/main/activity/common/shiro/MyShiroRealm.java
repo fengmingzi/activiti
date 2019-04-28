@@ -35,7 +35,7 @@ public class MyShiroRealm extends AuthorizingRealm {
     private PermissionService permissionService;
 
     /**
-     * 必须重写此方法，不然会报错
+     * 引入jwt时，必须重写此方法，不然会报错
      */
     @Override
     public boolean supports(AuthenticationToken token) {

@@ -1,8 +1,7 @@
-package com.main.activity.activiti;
+package com.main.activity.controller.activiti;
 
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngines;
-import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.junit.Test;

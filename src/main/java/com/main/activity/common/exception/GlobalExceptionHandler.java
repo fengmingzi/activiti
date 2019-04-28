@@ -2,7 +2,7 @@ package com.main.activity.common.exception;
 
 import com.main.activity.common.utils.Response;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authc.AccountException;
+import org.apache.shiro.ShiroException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,9 +24,9 @@ public class GlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = Exception.class)
-    public Response defaultErrorHandler(Exception ex) {
-        log.error(ex.getMessage(), ex);
-        return Response.fail(HttpStatus.INTERNAL_SERVER_ERROR.toString(), ex.getCause().getMessage());
+    public Response defaultErrorHandler(Exception e) {
+        log.error(e.getMessage(), e);
+        return Response.fail(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getCause().getMessage());
     }
 
     /**
@@ -34,9 +34,9 @@ public class GlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = ServiceException.class)
-    public Response serviceErrorHandler(ServiceException ex) {
-        log.error(ex.getMessage(), ex);
-        return Response.fail(ex.getCode() == null?"err500":ex.getCode(), ex.getMessage());
+    public Response serviceErrorHandler(ServiceException e) {
+        log.error(e.getMessage(), e);
+        return Response.fail(e.getCode() == null?"err500":e.getCode(), e.getMessage());
     }
 
     /**
@@ -46,9 +46,8 @@ public class GlobalExceptionHandler {
      * @param e	
      * @return com.main.activity.common.utils.Response
      */
-    @ExceptionHandler(AccountException.class)
+    @ExceptionHandler(ShiroException.class)
     public Response handleShiroException(Exception e) {
-        return Response.fail("400", e.getMessage());
-
+        return Response.fail("401", e.getMessage());
     }
 }

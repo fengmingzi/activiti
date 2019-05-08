@@ -1,4 +1,4 @@
-package com.main.activity.common.shiro;
+package com.main.activity.common.config.shiro;
 
 import com.main.activity.common.utils.JWTUtil;
 import com.main.activity.common.utils.Response;

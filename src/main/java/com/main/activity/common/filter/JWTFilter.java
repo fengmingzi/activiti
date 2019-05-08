@@ -1,6 +1,6 @@
 package com.main.activity.common.filter;
 
-import com.main.activity.common.shiro.JWTToken;
+import com.main.activity.common.config.shiro.JWTToken;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.ShiroException;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
@@ -20,7 +20,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
 
     /**
      * @author fengguang xu
-     * @description 如果带有 token，则对 token 进行检查，否则直接通过
+     * @description 根据token进行验证
      * @date 2019/4/26 10:43
      * @param request	
      * @param response

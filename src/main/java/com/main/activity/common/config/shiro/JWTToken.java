@@ -1,4 +1,4 @@
-package com.main.activity.common.shiro;
+package com.main.activity.common.config.shiro;
 
 import org.apache.shiro.authc.AuthenticationToken;
 

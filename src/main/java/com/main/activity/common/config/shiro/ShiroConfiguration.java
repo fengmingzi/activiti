@@ -1,4 +1,4 @@
-package com.main.activity.common.shiro;
+package com.main.activity.common.config.shiro;
 
 import com.main.activity.common.filter.JWTFilter;
 import org.apache.shiro.mgt.SecurityManager;
@@ -72,7 +72,7 @@ public class ShiroConfiguration {
         //map.put("/api/**", "user");
         // 请求“/testShiro”路径时，必须是有user角色的用户才可以，同时相比于在方法上加注解加在这里优先级更高
         //map.put("/testShiro", "roles[user]");
-        // 所有请求通过我们自己的JWT Filter
+        // 对/api下所有请求通过我们自己的JWT Filter
         map.put("/api/**", "jwt");
         //对所有用户认证
         map.put("/**", "authc");

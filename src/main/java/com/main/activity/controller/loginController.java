@@ -1,11 +1,10 @@
 package com.main.activity.controller;
 
-import com.main.activity.common.shiro.JWTToken;
+import com.main.activity.common.config.shiro.JWTToken;
 import com.main.activity.common.utils.JWTUtil;
 import com.main.activity.common.utils.Response;
 import com.main.activity.service.UserService;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;

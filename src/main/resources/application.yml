@@ -58,6 +58,15 @@ spring:
 mybatis:
   mapper-locations: classpath*:mapper/*Mapper.xml
 
+# =============
+# 线程池 配置
+# =============
+task-executor:
+  core_pool_size: 5
+  max_pool_size: 10
+  queue-capacity: 20
+  name-prefix: async-service-
+
 # =========================
 # Web容器(默认为tomcat) 配置
 # =========================

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.main.activity.dao.UserMapper">
+    <resultMap id="userMap" type="com.main.activity.model.User">
+        <id column="id" property="id" javaType="long" jdbcType="BIGINT"/>
+        <result column="name" property="name" javaType="string" jdbcType="VARCHAR"/>
+        <result column="password" property="password"/>
+        <result column="creator" property="creator"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modify_user" property="modifyUser"/>
+        <result column="modify_date" property="modifyDate"/>
+        <result column="is_deleted" property="isDeleted"/>
+    </resultMap>
+
+    <sql id="table">
+      sys_leave_apply
+    </sql>
+
+    <sql id="columns">
+        id, <include refid="cols_exclude_id"/>
+    </sql>
+
+    <sql id="cols_exclude_id">
+        name, password, creator, create_date, modify_user, modify_date, is_deleted
+    </sql>
+
+    <sql id="values">
+        #{name}, #{password}, #{creator}, now(), #{modifyUser}, now(), #{isDeleted}
+    </sql>
+
+    <!--相等条件-->
+    <sql id="condition_equal">
+        WHERE 1 = 1
+        <if test="entity != null">
+            <if test="entity.id!=null">AND id = #{entity.id}</if>
+            <if test="entity.name!=null">AND name = #{entity.name}</if>
+            <if test="entity.password!=null">AND password = #{entity.password}</if>
+            <if test="entity.creator!=null">AND creator = #{entity.creator}</if>
+            <if test="entity.modifyUser!=null">AND modify_user = #{entity.modifyUser}</if>
+            <if test="entity.isDeleted!=null">AND is_deleted = #{entity.isDeleted}</if>
+        </if>
+    </sql>
+
+    <!--模糊匹配条件-->
+    <sql id="condition">
+        WHERE 1 = 1
+        <if test="entity != null">
+            <if test="entity.id!=null">AND id = #{entity.id}</if>
+            <if test="entity.name!=null">AND name LIKE CONCAT ('%', #{entity.name}, '%')</if>
+            <if test="entity.password!=null">AND password = #{entity.password}</if>
+            <if test="entity.creator!=null">AND creator LIKE CONCAT ('%', #{entity.creator}, '%')</if>
+            <if test="entity.modifyUser!=null">AND modify_user LIKE CONCAT ('%', #{entity.modifyUser}, '%')</if>
+            <if test="entity.isDeleted!=null">AND is_deleted = #{entity.isDeleted}</if>
+        </if>
+    </sql>
+
+    <!--分页尾部-->
+    <sql id="pager_tail">
+        LIMIT #{pager.startRow},#{pager.rows}
+    </sql>
+
+    <!--分页排序-->
+    <sql id="pager_orderBy">
+        <if test="pager.sort != null and pager.sort != ''">
+            ORDER BY #{pager.sort} #{pager.order}
+        </if>
+    </sql>
+
+    <insert id="create" parameterType="com.main.activity.model.User" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO <include refid="table"/>
+        (<include refid="cols_exclude_id"/>)
+        VALUES
+        (<include refid="values"/>)
+    </insert>
+
+    <update id="update" parameterType="com.main.activity.model.User">
+        UPDATE <include refid="table"/>
+        <set>
+            modify_date = now(),
+            <if test="name!=null">name = #{name},</if>
+            <if test="password!=null">password = #{password},</if>
+            <if test="creator!=null">creator = #{creator},</if>
+            <if test="modifyUser!=null">modify_user = #{modifyUser},</if>
+            <if test="isDeleted!=null">is_deleted = #{isDeleted},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="com.main.activity.model.User">
+        DELETE FROM <include refid="table"/>
+        WHERE id = #{id}
+    </delete>
+
+    <update id="deleteLogicalById" parameterType="com.main.activity.model.User">
+        UPDATE <include refid="table"/>
+        SET is_deleted = 1
+        WHERE id = #{id}
+    </update>
+
+    <select id="getOneById" parameterType="Long" resultMap="userMap">
+        SELECT
+        <include refid="columns" />
+        FROM <include refid="table"/>
+        WHERE id = #{id}
+    </select>
+
+    <select id="getOneByCondition" parameterType="com.main.activity.model.User" resultMap="userMap">
+        SELECT * FROM <include refid="table"/>
+        <include refid="condition_equal"/>
+        LIMIT 1
+    </select>
+
+    <select id="countByCondition" parameterType="com.main.activity.model.User" resultType="long">
+        SELECT count(1) FROM <include refid="table"/>
+        <include refid="condition_equal"/>
+    </select>
+
+    <select id="getPageByCondition" resultMap="userMap">
+        SELECT * FROM <include refid="table"/>
+        <include refid="condition_equal"/>
+        <include refid="pager_orderBy"/>
+        <include refid="pager_tail"/>
+    </select>
+
+</mapper>

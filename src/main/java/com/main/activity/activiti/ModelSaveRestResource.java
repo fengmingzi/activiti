@@ -114,34 +114,6 @@ public class ModelSaveRestResource implements ModelDataJsonConstants {
   }
 
 
-    /**
-     * 部署模型.
-     *  act_re_deployment表中增加一条数据
-     *  act_re_procdef表中增加一条数据，生成.xml和.png
-     * @param modelId 模型id（act_re_model的id）
-     */
-    @PostMapping("/model/deploy")
-    public Map<String, Object> deployModel(String modelId){
-        Map<String, Object> result = new HashMap<>();
-        try {
-            Model modelData = repositoryService.getModel(modelId);
-            ObjectNode modelNode = (ObjectNode) new ObjectMapper()
-                    .readTree(repositoryService.getModelEditorSource(modelData.getId()));
-            byte[] bpmnBytes = null;
 
-            BpmnModel model = new BpmnJsonConverter().convertToBpmnModel(modelNode);
-            bpmnBytes = new BpmnXMLConverter().convertToXML(model);
-
-            String processName = modelData.getName() + ".bpmn20.xml";
-            repositoryService.createDeployment().name(modelData.getName())
-                    .addString(processName, new String(bpmnBytes)).deploy();
-            result.put("Message", "部署成功");
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            result.put("Message", "部署失败");
-            return result;
-        }
-    }
 
 }

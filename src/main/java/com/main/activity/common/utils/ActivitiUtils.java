@@ -1,4 +1,4 @@
-package com.main.activity.common.Utils;
+package com.main.activity.common.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -170,15 +170,13 @@ public class ActivitiUtils {
     }
 
     /**
-     * 开启请假的流程实例
-     * @param billId
-     * @param userId
+     * 启动流程实例，默认启动最高版本的
+     * 通过act_re_procdef表的KEY_
+     * @param key  通过act_re_procdef表的KEY_
+     * @param businessKey 业务key，自己与实际业务绑定
      */
-    public void startProceesInstance(Long billId , String userId){
-        Map<String , Object> variables = new HashMap<>();
-        variables.put("userID" , userId);
-        this.processEngine.getRuntimeService()
-                .startProcessInstanceByKey("shenqingtest" , ""+billId , variables); //第一个参数，就是流程中自己定义的名字，这个一定要匹配，否则是找不到的。
+    public ProcessInstance startProceesInstanceByKey(String key, String businessKey){
+        return this.processEngine.getRuntimeService().startProcessInstanceByKey(key, businessKey); //第一个参数，就是流程中自己定义的名字，这个一定要匹配，否则是找不到的。
     }
 
     /**
@@ -297,6 +295,18 @@ public class ActivitiUtils {
      */
     public void finishCurrentTaskByTaskId(String taskId){
         this.processEngine.getTaskService().complete(taskId);
+    }
+
+    /**
+     * @author fengguang xu
+     * @description 根据任务id设置委托人
+     * @date 2019/10/10 15:19
+     * @param taskId 任务id
+     * @param userId 用户id，根据自己业务需求设置
+     * @return void
+     */
+    public void setAssignee(String taskId, String userId){
+        this.processEngine.getTaskService().setAssignee(taskId, userId);
     }
 
     /**

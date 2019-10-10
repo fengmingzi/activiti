@@ -2,12 +2,9 @@ package com.main.activity.activiti;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.main.activity.common.Utils.ActivitiUtils;
+import com.main.activity.common.utils.ActivitiUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.activiti.bpmn.converter.BpmnXMLConverter;
-import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.editor.constants.ModelDataJsonConstants;
-import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngines;
 import org.activiti.engine.RepositoryService;
@@ -125,12 +122,14 @@ public class ActivitiController {
 
     /**
      * 启动流程实例
+     * 根据部署id获取部署定义id来启动流程实例
      * 在实际业务中可能在创建业务数据时选择部署的流程后，直接将业务数据id作为businessKey实现关联
-     * @param deploymentId
+     * @param deploymentId 部署id
      * @param businessKey
      * @return
      */
-    public Map<String, String> startProceesInstance(String deploymentId, String businessKey) {
+    @PostMapping(value = "/startProcessInstanceById")
+    public Map<String, String> startProcessInstanceById(String deploymentId, String businessKey) {
         Map<String, String> map = new HashMap<>();
         //根据部署id查询出部署定义信息
         ProcessDefinition processDefinition = activitiUtils.getProcessDefinitionByDeploymentId(deploymentId);
@@ -142,5 +141,51 @@ public class ActivitiController {
         return map;
     }
 
+    /**
+     * 默认启动版本高的实例
+     * 根据部署id获取部署定义的key，然后根据key来默认启动版本高的实例
+     * @date 2019/10/10 11:03
+     * @param key act_re_procdef表的KEY_
+     * @param businessKey
+     * @return java.util.Map<java.lang.String,java.lang.String>
+     */
+    @PostMapping(value = "/startProcessInstanceByKey")
+    public Map<String, String> startProcessInstanceByKey(String key, String businessKey) {
+        Map<String, String> map = new HashMap<>();
+        //根据部署定义key来启动流程实例，同时将要关联的业务与ACT_RU_EXECUTION表中的business_key字段做关联
+        ProcessInstance processInstance = activitiUtils.startProceesInstanceByKey(key, businessKey);
+        map.put("processInstance", processInstance.getId());
+        map.put("Message", "流程实例启动成功");
+        return map;
+    }
+
+    /**
+     * 完成任务
+     * @date 2019/10/10 15:24
+     * @param taskId	任务id
+     * @return java.util.Map<java.lang.String,java.lang.String>
+     */
+    @PostMapping(value = "/finishTask")
+    public Map<String, String> finishTask(String taskId) {
+        Map<String, String> map = new HashMap<>();
+        activitiUtils.finishCurrentTaskByTaskId(taskId);
+        map.put("Message", "任务完成");
+        return map;
+    }
+
+    /**
+     * 设置委托人
+     * @date 2019/10/10 15:25
+     * @param taskId	任务id
+     * @param userId	委托人
+     * @return java.util.Map<java.lang.String,java.lang.String>
+     */
+    @PostMapping(value = "/setAssignee")
+    public Map<String, String> setAssignee(String taskId, String userId) {
+        Map<String, String> map = new HashMap<>();
+        activitiUtils.setAssignee(taskId, userId);
+        map.put("Message", "任务完成");
+        return map;
+    }
 
 }

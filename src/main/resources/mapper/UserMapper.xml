@@ -14,7 +14,7 @@
     </resultMap>
 
     <sql id="table">
-      sys_leave_apply
+      sys_user
     </sql>
 
     <sql id="columns">

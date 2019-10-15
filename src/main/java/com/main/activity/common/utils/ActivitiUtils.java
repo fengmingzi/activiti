@@ -312,11 +312,11 @@ public class ActivitiUtils {
     /**
      * 完成任务的同时，进行下一个节点的审批人员的信息的传递
      * @param taskId
-     * @param object
+     * @param map 下一节点需要设置的信息
      */
-    public void finishCurrentTaskByTaskId(String taskId , Object object){
-        Map<String , Object> map = new HashMap<>();
-        map.put("assigeUser" , object);
+    public void finishTaskByTaskId(String taskId , Map map){
+        /*Map<String , Object> map = new HashMap<>();
+        map.put("assigeUser" , object);*/
         this.processEngine.getTaskService().complete(taskId , map);
     }
 }

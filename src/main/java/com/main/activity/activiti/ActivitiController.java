@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -165,10 +168,37 @@ public class ActivitiController {
      * @param taskId	任务id
      * @return java.util.Map<java.lang.String,java.lang.String>
      */
-    @PostMapping(value = "/finishTask")
-    public Map<String, String> finishTask(String taskId) {
+    @PostMapping(value = "/finishCurrentTask")
+    public Map<String, String> finishCurrentTask(String taskId) {
         Map<String, String> map = new HashMap<>();
         activitiUtils.finishCurrentTaskByTaskId(taskId);
+        map.put("Message", "任务完成");
+        return map;
+    }
+
+    /**
+     * 完成任务并设置下一个任务的信息
+     * @date 2019/10/10 15:24
+     * @param taskId	任务id
+     * @return java.util.Map<java.lang.String,java.lang.String>
+     */
+    @PostMapping(value = "/finishTask")
+    public Map<String, String> finishTask(String taskId, String type) {
+        Map<String, String> map = new HashMap<>();
+
+        //TODO 判断有没有委托人，如果有委托人需要判断当前用户是否是委托人
+
+        //TODO 可以通过act_ru_variable表获取设置的变量和值，然后进行数据验证
+
+        Map<String, String> variables = new HashMap<>();
+        if ("1".equals(type)) {
+            variables.put("assign", "111");
+        } else if ("2".equals(type)) {
+            variables.put("isagree", "0");
+        } else if ("3".equals(type)) {
+            variables.put("isagree", "1");
+        }
+        activitiUtils.finishTaskByTaskId(taskId, variables);
         map.put("Message", "任务完成");
         return map;
     }
@@ -184,8 +214,28 @@ public class ActivitiController {
     public Map<String, String> setAssignee(String taskId, String userId) {
         Map<String, String> map = new HashMap<>();
         activitiUtils.setAssignee(taskId, userId);
-        map.put("Message", "任务完成");
+        map.put("Message", "设置委托人");
         return map;
     }
+
+
+    /*public String viewImage(){
+        InputStream in = repositoryService.getProcessDiagramLayout().getResourceAsStream.getImageStream(deploymentId,imageName);//此处方法实际项目应该放在service里面
+        HttpServletResponse resp = ServletActionContext.getResponse();
+        try {
+            OutputStream out = resp.getOutputStream();
+            // 把图片的输入流程写入resp的输出流中
+            byte[] b = new byte[1024];
+            for (int len = -1; (len= in.read(b))!=-1; ) {
+                out.write(b, 0, len);
+            }
+            // 关闭流
+            out.close();
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }*/
 
 }
